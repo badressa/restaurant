@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateOrdersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->date('datelivraison');
+            $table->integer('total_price')->nullable();
+            $table->tinyInteger('livrisontype')->comment('0:dans le restaurant, 1:livraison');
+            $table->boolean('payee');
+            $table->tinyInteger('typepayement')->default(0)->comment('0:cash, 1:enligne');
+            $table->integer('reservation_id')->nullable()->comment('');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('orders');
+    }
+}
