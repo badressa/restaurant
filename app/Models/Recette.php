@@ -9,7 +9,7 @@ class Recette extends Model
 {
     use HasFactory;
 
-    public function idreceipts(){
+    public function recipemenus(){
         return $this->hasMany(RecipeMenu::class, 'recette_id' , 'id');
     }
 
@@ -18,5 +18,8 @@ class Recette extends Model
     }
     public function ingrediants(){
         return $this->belongsToMany(Ingredient::class, 'receipt_ingrediants','recette_id','ingredient_id');
+    }
+    public function category(){
+        return $this->belongsTo(RecetteCategory::class,'idCategorie','id');
     }
 }

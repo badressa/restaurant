@@ -7,14 +7,14 @@
         $reserDateArray = [];
         if(isset($reservations)){
            foreach($resercations as $reservation){
-            $reserDateArray[] = array('id' =>$reservation->id , 'date_reservation' );
+            $reserDateArray[] = array('id' =>   $reservation->id , 'date_reservation' );
            } 
         }
     }
     
 @endphp
 @extends('yami.yami_master')
-@section('yami')
+@section('yami') 
 <div class="table-box">
     <div class="container">
         <h1>Choisir la table qui te convient</h1> 
@@ -127,13 +127,21 @@
 
 position: relative;
 }
+
+.item .the-table-xl {
+  border-radius: 32px !important;
+}
+
 .item .the-table {
    /* position: absolute;
    left: 30px;
   top: 30px; */
+  display: flex;
   border-radius: 5px;
   width: 10em;
   height: 6em;
+  justify-content: center;
+  align-items: center;
   background-color: #5e4837;
   box-shadow: 0 3px 9pt rgba(0, 0, 0, 0.23), 0 3px 9pt rgba(0, 0, 0, 0.16);
 
@@ -143,8 +151,11 @@ position: relative;
   transform: translate(-50%, -50%); */
 }
 .item .the-sm-table {
+    display: flex;
     width: 6em;
     height: 4em;
+    justify-content: center;
+    align-items: center;
     background-color: #5e4837;
     box-shadow: 0 3px 9pt rgba(0, 0, 0, 0.23), 0 3px 9pt rgba(0, 0, 0, 0.16);
     border-radius: 5px;
@@ -180,8 +191,8 @@ position: relative;
 }
 #table-wrapper .chair-lg:nth-child(3) {
     right: -26px;
+    top: 26px;
     transform: rotate(90deg);
-    top: 2em;
 }
 #table-wrapper .chair-lg:nth-child(4) {
     right: 30px;
@@ -196,7 +207,7 @@ position: relative;
 
 #table-wrapper .chair-lg:nth-child(6) {
     left: -26px;
-    top: 2em;
+    top: 26px;
     transform: rotate(-90deg);
   
 } 
@@ -222,6 +233,70 @@ position: relative;
     top: 1em;
     transform: rotate(-90deg);
 }
+/* xl */
+#table-wrapper .chair-xl:nth-child(1) {
+    left: -15px;
+    top: -11px;
+    transform: rotate(-52deg);
+}
+
+#table-wrapper .chair-xl:nth-child(2) {
+    right: -15px;
+    top: -11px;
+    transform: rotate(52deg);
+}
+#table-wrapper .chair-xl:nth-child(3) {
+    right: -15px;
+    bottom: -11px;
+    transform: rotate(128deg);
+}
+#table-wrapper .chair-xl:nth-child(4) {
+    left: -15px;
+    bottom: -11px;
+    transform: rotate(-128deg);
+}
+#table-wrapper .chair-xl:nth-child(5) {
+    /*left: 30px;*/
+    left : 26px;
+    top: -26px;
+}
+#table-wrapper .chair-xl:nth-child(6) {
+    right: 26px;
+    top: -26px;
+}
+#table-wrapper .chair-xl:nth-child(7) {
+    right: 26px;
+    bottom: -26px;
+    transform: rotate(180deg);
+}
+#table-wrapper .chair-xl:nth-child(8) {
+    left: 26px;
+    bottom: -26px;
+    transform: rotate(180deg);
+}
+#table-wrapper .chair-xl:nth-child(9) {
+    right: -26px;
+    top: 26px;
+    transform: rotate(90deg);
+    
+}
+#table-wrapper .chair-xl:nth-child(10) {
+    left: -26px;
+    top: 26px;
+    transform: rotate(-90deg);
+}
+#table-wrapper .chair-xl:nth-child(11) {
+    top: -26px;
+    left: 60px;
+}
+#table-wrapper .chair-xl:nth-child(12) {
+    bottom: -26px;
+    right: 60px;
+}
+
+
+
+
 
 </style>
 

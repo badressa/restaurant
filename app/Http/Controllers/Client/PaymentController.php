@@ -14,7 +14,7 @@ class PaymentController extends Controller
 {
     public function PayOrder(Request $request){
 
-        $price = $request->price;
+        $price = $request->amount;
         $price = explode(' ',$price);
         $recette_ids = [];
         // after checking payement
@@ -45,23 +45,25 @@ class PaymentController extends Controller
         
         
         $itemsIng = session()->get('recipeingredients');
-        foreach ($itemsIng as $itemIng) {
-            if(in_array($itemIng['recipeid'],$recette_ids)){
-                //chech if there is ingredients then loop
-                if($itemIng['ingredients']){
-                    foreach($itemIng['ingredients'] as $ing){
-                        $ingredient = Ingredient::find($ing);
-
-                        $productIng =   new IngredientsRecipeConsumption();
-                        $productIng->libelle = $ingredient->nom ;
-                        $productIng->prix_unitaire = $ingredient->prix_unitaire;
-                        $productIng->recette_id = $itemIng['recipeid'] ;
-                        $productIng->ingredient_id = $ing;
-                        $productIng->order_id = $order->id ;
-                        $productIng->save(); 
-                    }   
-                }
-            }                     
+        if(!empty($itemsIng)){
+            foreach ($itemsIng as $itemIng) {
+                if(in_array($itemIng['recipeid'],$recette_ids)){
+                    //chech if there is ingredients then loop
+                    if($itemIng['ingredients']){
+                        foreach($itemIng['ingredients'] as $ing){
+                            $ingredient = Ingredient::find($ing);
+    
+                            $productIng =   new IngredientsRecipeConsumption();
+                            $productIng->libelle = $ingredient->nom ;
+                            $productIng->prix_unitaire = $ingredient->prix_unitaire;
+                            $productIng->recette_id = $itemIng['recipeid'] ;
+                            $productIng->ingredient_id = $ing;
+                            $productIng->order_id = $order->id ;
+                            $productIng->save(); 
+                        }   
+                    }
+                }                     
+            }
         }
         
         session()->put('product', null);

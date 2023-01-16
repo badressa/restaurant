@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.svg') }}" type="image/x-icon">            
+    <link rel="shortcut icon" href="{{ asset('frontend/yami/images/favicon.ico') }}" type="image/x-icon">            
     <!-- <link rel="stylesheet" href="assets/vendors/jquery-datatables/jquery.dataTables.min.css"> -->
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/fontawesome/all.min.css') }}">

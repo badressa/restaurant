@@ -54,7 +54,7 @@ class ItemMenuConroller extends Controller
     public function MenuEdit($id){
 
         $data['menu'] = ItemMenu::find($id);
-        $data['menu_recettes'] = RecipeMenu::with('receipts')->where('menu_id',$id)->get();
+        $data['menu_recettes'] = RecipeMenu::with('recettes')->where('menu_id',$id)->get();
     
         $data['formats'] = ItemFormat::all();
         $data['categories'] = RecetteCategory::all();
@@ -108,7 +108,7 @@ class ItemMenuConroller extends Controller
     public function MenuDetails($id){
 
         $data['menu'] = ItemMenu::find($id);
-        $data['menu_recettes'] = RecipeMenu::with('receipts')->where('menu_id',$id)->get();
+        $data['menu_recettes'] = RecipeMenu::with('recettes')->where('menu_id',$id)->get();
         $data['recettes'] = Recette::all();
         // dd($data);
         return view('backend.menu.details', $data);

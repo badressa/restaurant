@@ -1,3 +1,4 @@
+@dd(session()->get('resinfo'))
 @extends('yami.yami_master')
 @section('yami')
 	

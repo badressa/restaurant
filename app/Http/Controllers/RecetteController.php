@@ -38,6 +38,10 @@ class RecetteController extends Controller
             'reduction' => 'integer|min:0|max:100'
             
          ]);
+
+        $defaultCategory = RecetteCategory::where('nom','Others')->get()->last();
+        $defaultCategoryId =  $defaultCategory->id;
+    
         $data = new Recette();
         $data->libelle = $request->libelle;
         $data->prix_ht = $request->prix_ht;
@@ -45,11 +49,10 @@ class RecetteController extends Controller
         $data->prix_tcc = $request->prix_tcc;
         $data->description = $request->description;
         $data->reduction = $request->reduction;
-        $data->disponible = ($request->disponible==null) ? 0 : 1;
+        $data->disponible = ($request->disponible==null) ? 1 : 0;
         $data->quantite_predifinis = $request->quantite_predifinis;
         $data->durabilite = $request->durabilite;
-        $data->idFormat = $request->idFormat;
-        $data->idCategorie = $request->idCategorie;
+        $data->idCategorie = ($request->idCategorie==null)?$defaultCategoryId:$request->idCategorie;
         
         if ($request->file('photo')) {
 
@@ -97,6 +100,9 @@ class RecetteController extends Controller
             
          ]);
         
+        $defaultCategory = RecetteCategory::where('nom','Others')->get()->last();
+        $defaultCategoryId =  $defaultCategory->id;
+        
         $data = Recette::find($id);
         $data->libelle = $request->libelle;
         $data->prix_ht = $request->prix_ht;
@@ -107,11 +113,8 @@ class RecetteController extends Controller
         $data->disponible = ($request->disponible==null) ? 1 : 0;
         $data->quantite_predifinis = $request->quantite_predifinis;
         $data->durabilite = $request->durabilite;
-        $data->idFormat = $request->idFormat;
-        $data->idCategorie = $request->idCategorie;
+        $data->idCategorie = ($request->idCategorie==null)?$defaultCategoryId:$request->idCategorie;
         if ($request->file('photo')) {
-
-
     		$file = $request->file('photo');
     		@unlink(public_path('images/recettes/'.$data->photo));
     		$filename = date('YmdHi').$file->getClientOriginalName();

@@ -57,45 +57,48 @@
 
                 </div>
                     <div class="card-body"  >
-                    <table class="table" id="table1">
-                        <thead>
-                            <tr>
-                                <th>N°</th>
-                                <th>image</th>
-                                <th>libele</th>
-                                <th>prix_ht</th>
-                                <th>tva</th>
-                                <th>ttc</th>
-                                <th>date de creation</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($menu_recettes as $key => $recette )
+                        <table class="table" id="table1">
+                            <thead>
                                 <tr>
-                                    
-                                    <td>{{ $key+1 }}</td>
-                                    <td>
-                                        @if( $recette->receipts->photo!=null )
-                                            <img src="{{ url('/images/recettes/'.$recette->receipts->photo) }}" alt="{{ $recette->receipts->libelle}} " style="width: 6em;" > 
-                                        @endif
-                                    </td>	
-                                    <td> {{ $recette->receipts->libelle}}</td>	
-                                    <td> {{ $recette->receipts->prix_ht }}</td>	
-                                    <td> {{ $recette->receipts->tva }}</td>
-                                    <td> {{ $recette->receipts->tcc }}</td>	
-                                    <td> {{ $recette->receipts->created_at->diffForHumans() }}</td>	
-                                    <td>
-                                        @if($recette->receipts->disponible == 0)
-                                            <span class="badge bg-success">Disponible</span> 
-                                        @else
-                                            <span class="badge bg-danger">Non Disponible</span> 
-                                        @endif
-                                    </td>      
+                                    <th>N°</th>
+                                    <th>image</th>
+                                    <th>libele</th>
+                                    <th>prix_ht</th>
+                                    <th>tva</th>
+                                    <th>ttc</th>
+                                    <th>date de creation</th>
+                                    <th>Status</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach($menu_recettes as $key => $recette )
+                                @if(!$recette!=null)
+                                    <tr>
+                                        
+                                        <td>{{ $key+1 }}</td>
+                                        <td>
+                                            @if( $recette->recettes->photo!=null )
+                                                <img src="{{ url('/images/recettes/'.$recette->recettes->photo) }}" alt="{{ $recette->recettes->libelle}} " style="width: 6em;" > 
+                                            @endif
+                                        </td>	
+                                        <td> {{ $recette->recettes->libelle}}</td>	
+                                        <td> {{ $recette->recettes->prix_ht }}</td>	
+                                        <td> {{ $recette->recettes->tva }}</td>
+                                        <td> {{ $recette->recettes->tcc }}</td>	
+                                        <td> {{ $recette->recettes->created_at->diffForHumans() }}</td>	
+                                        <td>
+                                            @if($recette->recettes->disponible == 0)
+                                                <span class="badge bg-success">Disponible</span> 
+                                            @else
+                                                <span class="badge bg-danger">Non Disponible</span> 
+                                            @endif
+                                        </td>      
+                                    </tr>
+                                     @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                   
                 </div>
 
 

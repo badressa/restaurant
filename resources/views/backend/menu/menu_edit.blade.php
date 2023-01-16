@@ -116,79 +116,64 @@
 
             </div>
                 <div class="card-body"  >
-                <table class="table" id="table1">
-                    <thead>
-                        <tr>
-                            <th>N°</th>
-                            <th>image</th>
-                            <td>qte</td>
-                            <th>libele</th>
-                            <th>prix_ht</th>
-                            <th>tva</th>
-                            <th>ttc</th>
-                            <th>date de creation</th>
-                            <th>Status</th>
-                            <th>supprimer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($menu_recettes as $key => $recette )
+                @if(!$menu_recettes->isEmpty())
+                
+                    <table class="table" id="table1">
+                        <thead>
                             <tr>
-
-
-                                {{-- <td> {{ $key+1 }}</td>	
-                            <td> {{ $ingredient->ingrediant->nom}}</td>	
-                            <td>
-                             <form action="{{ route('recette.ingrediant.update', $ingredient->id) }}" method="POST">
-                                @csrf                                
-                                <input type="text" name="qte" value="{{ $ingredient->qte }}" style="width:5em;" > 
-                                <button title="edit"  class="btn btn-success" style="margin: 0em 0.2em"><i class="fas fa-edit"></i></button>
-                             </form>  
-                            </td>	
-                           
-                            <td>
-                                <form action="{{ route('recette.ingrediant.delete', $ingredient->id) }}" method="post">
-                                    @csrf
-                                    <button title="delete" type="submit" class="btn btn-danger" style="margin: 0em 0.2em"><i class="fas fa-trash-alt"></i></a>   
-                                </form>
-                                 
-                            </td>   --}}
-                                
-                                <td>{{ $key+1 }}</td>
-                                <td>
-                                    @if( $recette->receipts->photo!=null )
-                                        <img src="{{ asset('images/recettes/'.$recette->receipts->photo) }}" alt="{{ $recette->receipts->libelle}} " style="width: 6em;" > 
-                                    @endif
-                                </td>	
-                                <td> {{ $recette->receipts->libelle}}</td>	
-                                <td>
-                                    <form action="{{ route('menu.recipe.update', $recette->id) }}" method="POST">
-                                       @csrf                                
-                                       <input type="text" name="qte" value="{{ $recette->qte }}" style="width:5em;" > 
-                                       <button title="edit"  class="btn btn-success" style="margin: 0em 0.2em"><i class="fas fa-edit"></i></button>
-                                    </form>  
-                                </td>	
-                                <td> {{ $recette->receipts->prix_ht }}</td>	
-                                <td> {{ $recette->receipts->tva }}</td>
-                                <td> {{ $recette->receipts->tcc }}</td>	
-                                <td> {{ $recette->receipts->created_at->diffForHumans() }}</td>	
-                                <td>
-                                    @if($recette->receipts->disponible == 0)
-                                        <span class="badge bg-success">Disponible</span> 
-                                    @else
-                                        <span class="badge bg-danger">Non Disponible</span> 
-                                    @endif
-                                </td>
-                                <td>
-                                    <form action="{{ route('menu.recipe.delete', $recette->id) }}" method="post">
-                                        @csrf
-                                        <button title="delete" type="submit" class="btn btn-danger" style="margin: 0em 0.2em"><i class="fas fa-trash-alt"></i></a>   
-                                    </form>
-                                </td>      
+                                <th>N°</th>
+                                <th>image</th>
+                                <td>qte</td>
+                                <th>libele</th>
+                                <th>prix_ht</th>
+                                <th>tva</th>
+                                <th>ttc</th>
+                                <th>date de creation</th>
+                                <th>Status</th>
+                                <th>supprimer</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($menu_recettes as $key => $recette )
+                            @if($recette->recettes)
+                                <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>
+                                        @if( $recette->recettes->photo!=null )
+                                            <img src="{{ asset('images/recettes/'.$recette->recettes->photo) }}" alt="{{ $recette->recettes->libelle}} " style="width: 6em;" > 
+                                        @endif
+                                    </td>	
+                                    <td> {{ $recette->recettes->libelle}}</td>	
+                                    <td>
+                                        <form action="{{ route('menu.recipe.update', $recette->id) }}" method="POST">
+                                        @csrf                                
+                                        <input type="text" name="qte" value="{{ $recette->qte }}" style="width:5em;" > 
+                                        <button title="edit"  class="btn btn-success" style="margin: 0em 0.2em"><i class="fas fa-edit"></i></button>
+                                        </form>  
+                                    </td>	
+                                    <td> {{ $recette->recettes->prix_ht }}</td>	
+                                    <td> {{ $recette->recettes->tva }}</td>
+                                    <td> {{ $recette->recettes->tcc }}</td>	
+                                    <td> {{ $recette->recettes->created_at->diffForHumans() }}</td>	
+                                    <td>
+                                        @if($recette->recettes->disponible == 0)
+                                            <span class="badge bg-success">Disponible</span> 
+                                        @else
+                                            <span class="badge bg-danger">Non Disponible</span> 
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('menu.recipe.delete', $recette->id) }}" method="post">
+                                            @csrf
+                                            <button title="delete" type="submit" class="btn btn-danger" style="margin: 0em 0.2em"><i class="fas fa-trash-alt"></i></a>   
+                                        </form>
+                                    </td>      
+                                </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
 
         

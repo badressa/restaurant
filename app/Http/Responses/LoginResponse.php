@@ -32,7 +32,7 @@ class LoginResponse implements LoginResponseContract
             case 'admin':
                 return redirect()->intended(config('fortify.home'));
             case 'client':
-                return redirect()->intended('/welcome');
+                return redirect()->intended('/myrest');
             default:
                 return redirect('/');
         }

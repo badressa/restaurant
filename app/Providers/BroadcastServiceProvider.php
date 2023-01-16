@@ -15,7 +15,7 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot()
     {
         Broadcast::routes();
-
+        //['yami.reservation', 'table.select'];
         require base_path('routes/channels.php');
     }
 }

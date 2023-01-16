@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en"><!-- Basic -->
 <head>
 	<meta charset="utf-8">
@@ -16,7 +16,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" />
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="{{ asset('frontend/yami/images/favicon.ico" type="image/x-icon') }}">
+    <link rel="shortcut icon" href="{{ asset('frontend/yami/images/favicon.ico') }}" type="image/x-icon') }}">
     <link rel="apple-touch-icon" href="{{ asset('frontend/yami/images/apple-touch-icon.png') }}">
 
     <!-- Bootstrap CSS -->
@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/yami/css/responsive.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/yami/css/custom.css') }}">
-
+	<link meta="csrf-token" href="{{ csrf_token() }}">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -44,6 +44,8 @@
 	
 	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
 </body>
+
+
 <!-- ALL JS FILES -->
 <script src="{{ asset('frontend/yami/js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('frontend/yami/js/popper.min.js') }}"></script>
@@ -492,6 +494,14 @@ $(document).ready(function() {
 		
 
 </script>
+@yield('table-stuff')
+<script src="{{ asset('/js/app.js') }}"></script>
+
+<script>
+    //  Echo.channel('message')
+	// .listen('PodcastProcessed', (e)=> {alert('new msg : '+e)});
+</script>
+@yield('payment-js')
 
  <!-- End Card(panier) scripts-->
 </html>

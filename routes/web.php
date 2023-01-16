@@ -10,9 +10,13 @@ use App\Http\Controllers\RecetteController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\StaffController as ControllersStaffController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\User\StaffController;
 use App\Http\Responses\LoginResponse;
+use App\Models\Consumption;
+use App\Models\Order;
+use App\Models\PageView;
 use App\Models\RecetteCategory;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Support\Facades\Route;
@@ -27,20 +31,30 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('visitepage')->get('/',[ClientController::class, 'Home'])->name('yami.index');
-Route::get('/reservation/session/{request?}',[TableResController::class, 'SetSession'])->name('reserv.session');
+Route::middleware('visitepage')->get('/',[ClientController::class, 'Home'])->name('yami');
+//Route::get('/reservation/session/{request?}',[TableResController::class, 'SetSession'])->name('reserv.session');
 Route::get('/lo', function () {
+    
     return view('auth.login');
+});
+Route::get('/test', [ClientController::class, 'Test'])->name('yami.index');
+
+Route::get('/welcome', function () {
+    return view('welcome');
 });
 
 Route::prefix('myrest')->group(function(){
+    Route::get('stripe/payment',[StripeController::class, 'index'])->name('stripe.payment');
+    Route::post('/payement/checkout',[StripeController::class, 'checkout'])->name('stripe.checkout');
+    Route::get('/stripe/success',[StripeController::class, 'success'])->name('stripe.success');
+    Route::post('stripe/pay',[StripeController::class, 'pay'])->name('stripe.pay');
 
     Route::get('/ajax', [RestaurantController::class, 'getRestAjax'])->name('rest.ajax');
     
     Route::middleware('visitepage')->get('/',[ClientController::class, 'Home'])->name('yami.index');
     
     Route::middleware('visitepage')->get('/about',[ClientController::class, 'About'] )->name('yami.about');
-    Route::get('/table/{id}',[ClientController::class, 'Table'] )->name('yami.table');
+    Route::get('/table/{id}',[ClientController::class, 'Table'] )->name('yami.table.id');
     
     Route::middleware('visitepage')->get('/menu',[ClientController::class, 'Menu'])->name('yami.menu');
     
@@ -48,8 +62,10 @@ Route::prefix('myrest')->group(function(){
     Route::post('contact/send/message',[ClientController::class, 'ContactMessage'])->name('contact.message');
 
     Route::middleware('visitepage')->get('/reservation',[ClientController::class, 'Reservation'])->name('yami.reservation');
-    Route::match(['get', 'post'],'/reservation/set/table',[TableResController::class, 'TableSelect'])->name('table.select');
-    
+    Route::match(['get', 'post'],'/reservation/tables',[TableResController::class, 'ReservationTable'])->name('table.select');
+    Route::post('/reservation/table/set',[TableResController::class, 'ReservationTabSelect'])->name('table.select.id');
+    Route::post('/reservation/store',[TableResController::class, 'ReservationStore'])->name('yami.reservation.store');
+
     Route::get('/table',[ClientController::class, 'Table'])->name('yami.table');
 
     Route::middleware('visitepage')->get('/card',[ClientController::class, 'Panier'])->name('yami.panier');
@@ -71,13 +87,31 @@ Route::prefix('myrest')->group(function(){
 Route::middleware(['type:admin','auth'])->group(function () {
 
     Route::get('/d', function () {
-        return view('/dashboard');
+        $data['views'] = PageView::sum('views');
+        $data['clients'] = PageView::count('device_cookie');
+       //count agent groupe by 
+        $data['orders'] = Order::count('id');
+        $data['gain'] = Order::sum('total_price');
+        
+        //add colums contact vue and vue and other messages from chef ext stock  
+        return view('admin.index', $data);
+        
+        //return view('/dashboard');
         });
 
 
     //middleware(['auth:sanctum', 'verified'])->
     Route::get('/dashboard', function () {
-        return view('admin.index');
+        //SELECT SUM(views) FROM `restr`.`page_views` ORDER BY `id` ASC LIMIT 1000;
+        $data['views'] = PageView::sum('views');
+        $data['clients'] = PageView::count('device_cookie');
+       //count agent groupe by 
+        $data['orders'] = Order::count('id');
+        $data['gain'] = Order::sum('total_price');
+        
+        //add colums contact vue and vue and other messages from chef ext stock  
+        // return view('admin.index', $data);
+        return view('/dashboard');
     })->name('dashboard');
 
     Route::prefix('restaurant')->group(function(){
@@ -219,18 +253,3 @@ Route::prefix('auth')->group(function(){
    
 });
 
-Route::prefix('client')->group(function(){
-    //authentification
-    Route::get('/index', function () {
-    
-        return view('client.index');
-    });
-    Route::get('/register', function () {
-    
-        return view('auth.register');
-    });
-});
-
-Route::get('/welcome', function () {
-    return view('client.index');
-});

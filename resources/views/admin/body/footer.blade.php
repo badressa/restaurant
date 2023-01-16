@@ -4,7 +4,7 @@
             <p>2021 &copy; Restaurant</p>
         </div>
         <div class="float-end">
-            <p>Crafted with  by <a>B. es</a></p>
+            <p>Crié  par <a>B. es</a></p>
         </div>
     </div>
 </footer>

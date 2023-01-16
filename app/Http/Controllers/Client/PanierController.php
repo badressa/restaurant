@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 class PanierController extends Controller
 {
     public function addToCard(Request $request){
-
+        // return response()->json( $request->all());
         $items  =  session()->get('product');
         $getTotalPrice  =  session()->get('totalprice');
         $itemexist = false;
@@ -33,20 +33,24 @@ class PanierController extends Controller
         if( $request->id != null && $itemexist==false ){
             $product = array( 'id'=> $request->id, 'qte'=>$request->qte, 'prix'=> $request->prix, 'ingredients'=> array());
 
-            // $totalPrice = 
-            $request->session()->push('product', $product);
+                     $request->session()->push('product', $product);
             $request->session()->put('items', count(session()->get('product')) );
-        }else{
-            // foreach ($items as &$item) {
-            //     if ($item['id'] == $request->id) {
-            //         $product =  $item;
-            //     }
-            // }
         }
+        //else{
+        //     // foreach ($items as &$item) {
+        //     // if(isset($item['qte']) && isset($item['prix']) && isset($item['id']))    
+        //     //     if ($item['id'] == $request->id) {
+        //     //         $product =  $item;
+        //     //     }
+        //     // }
+        // }
 
         if($items != null){
             foreach ($items as &$item) {
-                $totalPrice +=  $item['qte'] *  $item['prix'] ;
+                if(isset($item['id'])){
+                    if(isset($item['qte']) && isset($item['prix']) && isset($item['id']))
+                    $totalPrice +=  $item['qte'] *  $item['prix'] ;
+                }
             }    
         }
         
@@ -57,9 +61,11 @@ class PanierController extends Controller
         
         if($items != null){
             foreach ($items as &$item) {
-                if ($item['id'] == $request->id) {
-                    $totalPrice +=  $item['qte'] *  $item['prix'];
-                }    
+                if(isset($item['id'])){
+                    if ($item['id'] == $request->id) {
+                        $totalPrice +=  $item['qte'] *  $item['prix'];
+                    }    
+                } 
             }
         }
             
@@ -81,9 +87,11 @@ class PanierController extends Controller
        
         
         foreach ($items as &$item) {
-            if ($item['id'] == $request->id) {
-                $item['qte']++;
-                $product =  $item;
+            if(isset($item['qte']) && isset($item['prix']) && isset($item['id'])){ 
+                if ($item['id'] == $request->id) {
+                    $item['qte']++;
+                    $product =  $item;
+                }
             }
             $totalPrice +=  $item['qte'] *  $item['prix'];
         }
@@ -107,10 +115,11 @@ class PanierController extends Controller
        
         
         foreach ($items as &$item) {
-            
-            if ($item['id'] == $request->id) {
-                if($item['qte']>1) $item['qte']--;
-                $product =  $item;
+            if(isset($item['qte']) && isset($item['prix']) && isset($item['id'])){
+                if ($item['id'] == $request->id) {
+                    if($item['qte']>1) $item['qte']--;
+                    $product =  $item;
+                }
             }
 
             $totalPrice +=  $item['qte'] *  $item['prix'];
@@ -132,12 +141,15 @@ class PanierController extends Controller
         $totalPrice = 0;
 
         foreach ($items as &$item) {
-            if ($item['id'] == $request->id) {
-                $product=  $item;
-            }else{
-                $newitems +=  $item;
-                $totalPrice +=  $item['qte'] *  $item['prix'];
-            }    
+            if(isset($item['qte']) && isset($item['prix']) && isset($item['id'])){
+                if ($item['id'] == $request->id) {
+                    $product=  $item;
+                }else{
+                    $newitems +=  $item;
+                    $totalPrice +=  $item['qte'] *  $item['prix'];
+                }   
+            }
+             
         }
 
         session()->put('product', null);
@@ -231,7 +243,9 @@ class PanierController extends Controller
         
             
             foreach ($items as &$item) {
-                $totalPrice +=  $item['qte'] *  $item['prix'];
+                if(isset($item['qte']) && isset($item['prix']) && isset($item['id'])){
+                    $totalPrice +=  $item['qte'] *  $item['prix'];
+                }
             }
             $data['totalPrice'] = $totalPrice;
 

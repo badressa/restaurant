@@ -26,10 +26,10 @@
                             <th>N°</th>
                             <th>image</th>
                             <th>libele</th>
-                            <th>prix_ht</th>
-                            <th>tva</th>
+                            {{-- <th>prix_ht</th>
+                            <th>tva</th> --}}
                             <th>ttc</th>
-                            <th>date de creation</th>
+                            {{-- <th>date de creation</th> --}}
                             <th>Ingredients</th>
                             <th>Status</th>
                             <th>modifier</th>
@@ -42,10 +42,10 @@
                             <td>{{ $key+1 }}</td>
                             <td> <img src="{{ asset('images/recettes/'.$value->photo) }}" alt="{{ $value->libelle}} " style="width: 6em;" > </td>	
                             <td> {{ $value->libelle}}</td>	
-                            <td> {{ $value->prix_ht }}</td>	
-                            <td> {{ $value->tva }}</td>
+                            {{-- <td> {{ $value->prix_ht }}</td>	
+                            <td> {{ $value->tva }}</td> --}}
                             <td> {{ $value->prix_tcc }}</td>	
-                            <td> {{ $value->created_at->diffForHumans() }}</td>	
+                            {{-- <td> {{ $value->created_at->diffForHumans() }}</td>	 --}}
                            
                             <td>
                                 <!-- Button trigger modal -->

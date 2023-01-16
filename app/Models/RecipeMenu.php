@@ -14,9 +14,12 @@ class RecipeMenu extends Model
     public function menu(){
         $this->belongsTo(ItemMenu::class, 'menu_id' , 'id');
     }
-    // recipe not receipts
-    public function receipts(){
+    
+    public function recettes(){
         return $this->belongsTo(Recette::class, 'recette_id' , 'id');
+    }
+    public function recettescategories(){
+        return $this->hasManyThrough(RecetteCategory::class,Recette::class,'idCategorie','recette_id','id','id');
     }
     
 }

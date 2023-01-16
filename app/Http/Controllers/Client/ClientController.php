@@ -8,6 +8,7 @@ use App\Models\Consumption;
 use App\Models\Contact;
 use App\Models\ItemMenu;
 use App\Models\Recette;
+use App\Models\RecetteCategory;
 use App\Models\RecipeMenu;
 use App\Models\Table;
 use DateTime;
@@ -40,7 +41,7 @@ class ClientController extends Controller
         $datetimenow= $d->format('Y-m-d H:i:s');
         $datenow= $d->format('Y-m-d');
 
-        session()->put('resinfo', 'fffff');
+        session()->put('resinfo', null);
         $rest = new RestaurantController();
         $restinfo =  $rest->getRestAjax();
         $restinfo = $restinfo->getOriginalContent();
@@ -64,6 +65,29 @@ class ClientController extends Controller
             $openDateTime = new DateTime($datenow ." ".$restopening[0] ,new DateTimeZone($timeZoneFirst));
             $openDateTime = $openDateTime->format('H:i'); 
         }
+                $minesQuarter = clone $d;
+                $minesQuarter= $minesQuarter->modify('-15 minutes')->format('Y-m-d H:i:s');
+                $data['minesQuarter'] = $minesQuarter;
+                $plusQuarter =  clone $d;
+                $plusQuarter= $plusQuarter->modify('+15 minutes')->format('Y-m-d H:i:s');
+                $data['plusQuarter'] = $plusQuarter;
+        $data['tablemaxrow'] = Table::selectRaw(" MAX(row) AS rowmax ")->orderby('rowmax','desc')->first()->rowmax;
+        $data['tables'] = Table::with('reservations')->orderBy('row', 'asc')->orderBy('col', 'asc')->get();
+        $data['tablemaxcol'] = Table::selectRaw(" MAX(col) AS colmax ")->orderby('colmax','desc')->first()->colmax;
+        $data['rowcount'] = Table::selectRaw("row  ,COUNT(col) AS rowcount ")->groupby('row')->orderby('rowcount','desc')->get();
+    
+        //$data['reservations'] = Reservation::all();//where(date+day>=DateFunction-day)
+        
+        $itemnum = session()->get('items');
+        $data['items'] = $itemnum;
+
+        $items =  session()->get('product');
+        
+        
+        //$data['errorMsg'] = $errorMessage;
+        
+        $data['resinfo'] = session()->get('resinfo');
+
         $data['opent'] =  $openDateTime?$openDateTime:'';
         $data['preventt'] =  $preventOrderTime?$preventOrderTime:'';
         $data['closet'] =  $closeDateTime?$closeDateTime:'';
@@ -87,8 +111,11 @@ class ClientController extends Controller
         $id = ItemMenu::where('status',0)->get()->last()->id;
 
         //check disponible receipts
-        $data['menu_recettes'] = RecipeMenu::with(['receipts','receipts.ingrediants'])->where('menu_id',$id)->get();
+        $data['menu_recettes'] = RecipeMenu::with(['recettes','recettes.ingrediants'])->where('menu_id',$id)->get();
+        $data['recipe_categories'] = RecetteCategory::with(['recetteMenuCategories','recettes','recettes.recipemenus','recettes.ingrediants'])->get();
+        // $data['recipe_categories'] = RecetteCategory::with(['recettes'])->get();
         $data['recettes'] = Recette::all();
+        //dd($data['recipe_categories']);
         return view('frontend.menu.index', $data);
     }
     
@@ -98,9 +125,9 @@ class ClientController extends Controller
     }
 
     public function Panier() {
+
         $items =  session()->get('product');
         $totalPrice = 0;
-
         if($items != null){
             foreach ($items as &$item) {
                 $totalPrice +=  $item['qte'] *  $item['prix'] ;
@@ -115,17 +142,16 @@ class ClientController extends Controller
                 $strIds .=  $item['id'].',';
             }
         }
-
-        
+   
          $data['items'] = session()->get('items');
 
         // $id = $request->id;
 
-        $ids = str_split(str_replace(',', '', $strIds));
+        $ids = explode(',',$strIds);
         
         $data['menu_recettes'] = Recette::whereIn('id', $ids)->get();
         $data['totalPrice'] = $totalPrice;
-       // dd($data['menu_recettes']);
+      
         // $asset_request = asset_request::whereIn('id', $ids)->get();
         // $data['menu'] = ItemMenu::get()->last();
         // $id = ItemMenu::get()->last()->id;
@@ -163,6 +189,73 @@ class ClientController extends Controller
         $notification = "contact ajoutée avec succès";
         return redirect()->route('yami.index')->with($notification);
    
+    }
+
+    public function Test(Request $request){
+        $data['items'] = session()->get('items');
+
+        //dd(session()->getId());
+        $timeregex = "/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/";
+
+        //note for dynamic time zones countries(MA,FR,...) check if DateTimeZone not null
+        $timeZone = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, "MA") ;
+        $timeZoneFirst =  $timeZone[0];
+        //create current DateTime
+        $d = new DateTime("now", new DateTimeZone($timeZoneFirst));
+        $datetimenow= $d->format('Y-m-d H:i:s');
+        $datenow= $d->format('Y-m-d');
+
+        session()->put('resinfo', null);
+        $rest = new RestaurantController();
+        $restinfo =  $rest->getRestAjax();
+        $restinfo = $restinfo->getOriginalContent();
+        $restopening = $restinfo['heures_ouv'];
+
+        if(preg_match($timeregex, $restopening[0]) && preg_match($timeregex, $restopening[1])){
+            if($restopening[1] = "00:00"){
+                $closeDateTime = new DateTime($datenow ." ".$restopening[1], new DateTimeZone($timeZoneFirst));
+                $closeDateTime = $closeDateTime->modify('+1 day')->format('H:i');
+                
+                $preventOrderDateTime = new DateTime($closeDateTime, new DateTimeZone($timeZoneFirst));
+                $preventOrderTime = $preventOrderDateTime->modify('-30 minutes')->format('H:i');
+                //dd($preventOrderTime);
+            }
+            else{
+                $closeDateTime = new DateTime($datenow ." ".$restopening[1], new DateTimeZone($timeZoneFirst));
+                $preventOrderTime = $closeDateTime->modify('-15 minutes')->format('H:i');
+                $closeDateTime = $closeDateTime->format('H:i');
+            }
+
+            $openDateTime = new DateTime($datenow ." ".$restopening[0] ,new DateTimeZone($timeZoneFirst));
+            $openDateTime = $openDateTime->format('H:i'); 
+        }
+                $minesQuarter = clone $d;
+                $minesQuarter= $minesQuarter->modify('-15 minutes')->format('Y-m-d H:i:s');
+                $data['minesQuarter'] = $minesQuarter;
+                $plusQuarter =  clone $d;
+                $plusQuarter= $plusQuarter->modify('+15 minutes')->format('Y-m-d H:i:s');
+                $data['plusQuarter'] = $plusQuarter;
+        $data['tablemaxrow'] = Table::selectRaw(" MAX(row) AS rowmax ")->orderby('rowmax','desc')->first()->rowmax;
+        $data['tables'] = Table::with('reservations')->orderBy('row', 'asc')->orderBy('col', 'asc')->get();
+        $data['tablemaxcol'] = Table::selectRaw(" MAX(col) AS colmax ")->orderby('colmax','desc')->first()->colmax;
+        $data['rowcount'] = Table::selectRaw("row  ,COUNT(col) AS rowcount ")->groupby('row')->orderby('rowcount','desc')->get();
+    
+        //$data['reservations'] = Reservation::all();//where(date+day>=DateFunction-day)
+        
+        $itemnum = session()->get('items');
+        $data['items'] = $itemnum;
+
+        $items =  session()->get('product');
+        
+        
+        //$data['errorMsg'] = $errorMessage;
+        
+        $data['resinfo'] = session()->get('resinfo');
+
+        $data['opent'] =  $openDateTime?$openDateTime:'';
+        $data['preventt'] =  $preventOrderTime?$preventOrderTime:'';
+        $data['closet'] =  $closeDateTime?$closeDateTime:'';
+        return view('test.index', $data);
     }
     
 }

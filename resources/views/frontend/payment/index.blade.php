@@ -4,10 +4,17 @@
 	<!-- Start All Pages -->
 	
 	<!-- End All Pages -->
-	
-	<!-- Start Contact -->
+	<div class="g-errors">
 
-	<div class="container py-5">
+	</div>
+	<!-- Start Contact -->
+	<form action="{{ route('order.pay') }}" id="regForm"  class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_PK') }}" method="POST">
+		@csrf
+		@include('components.payement.stripe',['totalPrice'=>$totalPrice])
+	</form>
+
+
+	{{-- <div class="container py-5">
 		<!-- For demo purpose -->
 		<div class="row mb-4">
 			<div class="col-lg-8 mx-auto text-center">
@@ -31,7 +38,7 @@
 							<div id="credit-card" class="tab-pane fade show active pt-3">
 								<form action="{{ route('order.pay') }}" method="post" role="form">
 									@csrf
-								{{-- <form action="{{ route('order.pay') }}" role="form" onsubmit="event.preventDefault()"> --}}
+								{{-- <form action="{{ route('order.pay') }}" role="form" onsubmit="event.preventDefault()"> 
 									<div class="form-group"> 
 										<label for="username">
 											<h6>Card Owner</h6>
@@ -147,5 +154,168 @@
 	</div> --}}
 	<!-- End Contact -->	
 	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+	@section('payment-js')
+	{{-- <script type="https://js.stripe.com/v3"></script>
+	<script>
+		const stripe = Stripe({{ env('STRIPE_SK') }});
+		const elements = stripe.elements();
+		cons cardElements = elements.create('card',{
+			classes: {
+				base: 'Stripe Element bg-white w-1/2 p-2 my-2 rounded-lg'
+			}
+		});
+
+		cardElements.mount('#card-element');
+
+		const cardButton = document.getElementById('subscribe');
+
+		cardButton.addEventListener('click', async(e)=>{
+			e.preventDefault();
+			
+			const {payementMethod, error} = await stripe.createPayementMethod('card', cardElement);
+
+			if(error){
+				alert(error)
+			}else{
+				document.getElementById('payment_method').value = payementMethod.id;
+			}
+
+			//document.getElementById('form').submit();
+		})
+
+	</script> --}}
+	
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	function checkPayement(token,callback){
+		event.preventDefault();
+		amount = $('.amount').val().split(' ')[0];
+		username = $('.username').val();
+		var token = token;
+
+		console.log('token', token );
+
+		var valid = true;
+		var response;
+		var url = '{{ route('table.select.id') }}';
+		var data = { 
+			_token: '{{csrf_token()}}',
+			'stripeToken': token,
+			'amount': amount,
+		};
+		try {
+			stripe.handleCardPayment(
+				clientSecret, cardElement
+			).then(function(result) {
+				if (result.error) {
+				// Display error.message in your UI.
+				console.log(error);
+				} else {
+				// The payment has succeeded. Display a success message.
+				}
+			});
+		}
+		catch(error) {
+		console.log(error.message);
+		}
+		
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.open("POST",'{{ route('stripe.pay')}}', false); 
+		xhttp.setRequestHeader("Content-Type", "application/json");
+		xhttp.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
+
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			// Response
+			response = JSON.parse(this.responseText);
+			var items ='';
+			if(response.length != 0){
+				
+				valid = true;
+			}
+			console.log(response);
+
+			if(callback) callback(response);
+		}else{
+			console.log('error', response)
+		}
+		};
+		xhttp.send(JSON.stringify(data));
+		return  valid;
+	}
+
+	//Stripe(publishableKey,options?)
+	$(function() {
+		var $form = $(".require-validation");
+		$('form.require-validation').bind('submit', function(e) {
+			var $form = $(".require-validation");
+			inputSelector = ['input[type=email]', 'input[type=password]', 'input[type=text]', 'input[type=file]', 'textarea'].join(', ');
+			$inputs = $form.find('.required').find(inputSelector);
+			$errorMessage = $form.find('g-errors');
+			valid = true;
+			console.log('number' + $('.card-number').val(),
+						'cvc' + $('.card-cvc').val(),
+						'exp_month' + $('.card-expiry-month').val(),
+						'exp_year' + $('.card-expiry-year').val(),)
+			$errorMessage.addClass('hide');
+			$('.has-error').removeClass('has-error');
+			$inputs.each(function(i, el) {
+				var $input = $(el);
+				if ($input.val() === '') {
+					$input.parent().addClass('has-error');
+					$errorMessage.removeClass('hide');
+					e.preventDefault();
+				}
+			});
+			if (!$form.data('cc-on-file')) {
+			e.preventDefault();
+			var stripe = Stripe($form.data('stripe-publishable-key'));	
+			Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+			Stripe.createToken({
+				number: $('.card-number').val(),
+				cvc: $('.card-cvc').val(),
+				exp_month: $('.card-expiry-month').val(),
+				exp_year: $('.card-expiry-year').val()
+			}, stripeResponseHandler);
+			}
+		});
+		
+
+		function stripeResponseHandler(status, response) {
+			if(response.error) {
+				var items=' ';
+				items +=`<li> 
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										${response.error.message}
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</li> ` ;
+				html = `<ul>${items}</ul>`
+				document.getElementsByClassName('g-errors')[0].innerHTML = html; 
+
+				// $('.error-r')
+				// .removeClass('hide')
+				// // .find('.alert')
+				// .text(response.error.message);
+				console.log(response.error.message);
+			}else {
+			/* token contains id, last4, and card type */
+			var token = response['id'];
+			var checkP = checkPayement(token);
+			if(checkP){
+			$form.get(0).submit();
+			}
+			
+			}
+		}
+	});
+
+	
+	</script>
+@endsection
 
 @endsection

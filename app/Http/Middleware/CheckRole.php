@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Client\ClientController;
 use Closure;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\Cast\String_;
@@ -20,9 +21,13 @@ class CheckRole
         if($type=='admin' && auth()->user()->type != 'admin' ){
              abort(403);
         }
-        if($type=='client' && auth()->user()->type != 'client' ){
-            abort(403);
-        }
+        // if($type=='client' && auth()->user()->type != 'client' ){
+        //     abort(403);
+        // }
+        
+        // if(auth()->user()->type == 'client' ){
+        //     return redirect()->action([ClientController::class, 'Home']);
+        // }
 
         return $next($request);
     }

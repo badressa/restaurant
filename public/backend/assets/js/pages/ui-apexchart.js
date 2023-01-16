@@ -4,7 +4,7 @@ var lineOptions = {
   },
   series: [
     {
-      name: "sales",
+      name: "s",
       data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
     },
   ],

@@ -17,36 +17,30 @@
             <div class="card">
                 <div class="card-header">
                     <h4 style="display: contents;">Recette </h4>
-
                 </div>
-                
-                
-                
-        
-                
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6"> 
-        
-                                    @if($recette->photo!=null)
-                                        <img src="{{ asset('images/recettes/'.$recette->photo) }}" alt="{{ $recette->libelle}} "> 
-                                    @endif
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6"> 
 
-                                </div>
-                                
-                                <div class="col-md-6">
-                                        <p><b>libelle</b> {{$recette->libelle}} </p>
-                                        <div class="form-check form-switch pt-4">
-                                            <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" checked="" disabled>
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">active</label>
-                                        </div>
-                                </div>
-                            </div>                            
+                            @if($recette->photo!=null)
+                                <img src="{{ asset('images/recettes/'.$recette->photo) }}" alt="{{ $recette->libelle}}" style="max-width: 10em;max-height: 6em;"> 
+                            @endif
+
                         </div>
-        
-                
+                        
+                        <div class="col-md-6">
+                                <p><b>libelle</b> {{$recette->libelle}} </p>
+                                <p><b>libelle</b> Categorie : {{$recette->idCategorie}} </p>
+                                
+                                <div class="form-check form-switch pt-4 px-0">
+                                    <label class="form-check-label" for="flexSwitchCheckChecked" >active</label>
+                                    <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" checked="" style="left: 5.5rem !important;" disabled>
+                                    
+                                </div>
+                        </div>
+                    </div>                            
+                </div>
             </div>
-
         </section>
         
     

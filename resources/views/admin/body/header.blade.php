@@ -4,20 +4,20 @@
     </a>
     <nav class="navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
-        <ul class="navbar-nav">
+        {{-- <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="index3.html" class="nav-link">Home</a>
+            <a href="index3.html" class="nav-link">Accuiel</a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
+            <a href="#" class="nav-link">Les contacs</a>
           </li>
-        </ul>
+        </ul> --}}
     
         <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto" style="align-items: flex-end;">
           <!-- Navbar Search -->
           <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -125,7 +125,7 @@
               <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
               <i class="fas fa-expand-arrows-alt"></i>
             </a>
@@ -134,22 +134,38 @@
             <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
               <i class="fas fa-th-large"></i>
             </a>
+          </li> --}}
+          <!-- Notifications Dropdown Menu -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+              <div class="d-flex align-items-center">
+                <div class="avatar avatar-xl">
+                    <img src="{{ asset('backend/assets/images/faces/1.jpg') }}" alt="Face 1">
+                </div>
+                <div class="ms-3 name">
+                    <h5 class="font-bold">John Duck</h5>
+                    <h6 class="text-muted mb-0">@johnducky</h6>
+                </div>
+              </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit;right: 123px;">
+            
+              <div class="dropdown-divider"></div>
+              <a href="{{ route('logout') }}" class="dropdown-item">
+                <i class="fas fa-users mr-2"></i> Decconect
+                <span class="float-right text-muted text-sm">12 hours</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              {{-- <a href="#" class="dropdown-item">
+                <i class="fas fa-file mr-2"></i> 3 new reports
+                <span class="float-right text-muted text-sm">2 days</span>
+              </a>
+              <div class="dropdown-divider"></div> --}}
+             
+            </div>
           </li>
+        
         </ul>
       </nav>
-    {{-- <div class="col-12 col-lg-3">
-        <div class="card">
-            <div class="card-body py-4 px-5">
-                <div class="d-flex align-items-center">
-                    <div class="avatar avatar-xl">
-                        <img src="{{ asset('backend/assets/images/faces/1.jpg') }}" alt="Face 1">
-                    </div>
-                    <div class="ms-3 name">
-                        <h5 class="font-bold">John Duck</h5>
-                        <h6 class="text-muted mb-0">@johnducky</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
 </header>

@@ -10,7 +10,7 @@ $route = Route::current()->getName();
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="index.html"><img src="{{asset('backend/assets/images/logo/logo.png') }}" alt="Logo" srcset=""></a>
+                    <a href="#"><img src="{{ asset('frontend/yami/images/logo.png') }}" alt="Logo" srcset="" style="height: 1.5em;"></a>
                 </div>
                 <div class="toggler">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -139,7 +139,7 @@ $route = Route::current()->getName();
                       </ul>
                   </li>
                   
-                  <li
+                  {{-- <li
                       class="sidebar-item  has-sub">
                       <a href="#" class='sidebar-link'>
                           <i class="bi bi-grid-1x2-fill"></i>
@@ -164,9 +164,9 @@ $route = Route::current()->getName();
                       </ul>
                   </li>
                   
-                  <li class="sidebar-title">Forms &amp; Tables</li>
+                  <li class="sidebar-title">Forms &amp; Tables</li> --}}
                   
-                  <li
+                  {{-- <li
                       class="sidebar-item  has-sub">
                       <a href="#" class='sidebar-link'>
                           <i class="bi bi-hexagon-fill"></i>
@@ -192,9 +192,9 @@ $route = Route::current()->getName();
                               <a href="form-element-textarea.html">Textarea</a>
                           </li>
                       </ul>
-                  </li>
+                  </li> --}}
                   
-                  <li
+                  {{-- <li
                       class="sidebar-item  ">
                       <a href="form-layout.html" class='sidebar-link'>
                           <i class="bi bi-file-earmark-medical-fill"></i>
@@ -304,30 +304,6 @@ $route = Route::current()->getName();
                       </ul>
                   </li>
                   
-                  <li
-                      class="sidebar-item  ">
-                      <a href="ui-file-uploader.html" class='sidebar-link'>
-                          <i class="bi bi-cloud-arrow-up-fill"></i>
-                          <span>File Uploader</span>
-                      </a>
-                  </li>
-                  
-                  <li
-                      class="sidebar-item  has-sub">
-                      <a href="#" class='sidebar-link'>
-                          <i class="bi bi-map-fill"></i>
-                          <span>Maps</span>
-                      </a>
-                      <ul class="submenu ">
-                          <li class="submenu-item ">
-                              <a href="ui-map-google-map.html">Google Map</a>
-                          </li>
-                          <li class="submenu-item ">
-                              <a href="ui-map-jsvectormap.html">JS Vector Map</a>
-                          </li>
-                      </ul>
-                  </li>
-                  
                   <li class="sidebar-title">Pages</li>
                   
                   <li
@@ -360,71 +336,18 @@ $route = Route::current()->getName();
                           <i class="bi bi-basket-fill"></i>
                           <span>Checkout Page</span>
                       </a>
-                  </li>
+                  </li> --}}
                   
-                  <li
-                      class="sidebar-item  has-sub">
-                      <a href="#" class='sidebar-link'>
-                          <i class="bi bi-person-badge-fill"></i>
-                          <span>Authentication</span>
-                      </a>
-                      <ul class="submenu ">
-                          <li class="submenu-item ">
-                              <a href="auth-login.html">Login</a>
-                          </li>
-                          <li class="submenu-item ">
-                              <a href="auth-register.html">Register</a>
-                          </li>
-                          <li class="submenu-item ">
-                              <a href="auth-forgot-password.html">Forgot Password</a>
-                          </li>
-                      </ul>
-                  </li>
+                 
                   
-                  <li
-                      class="sidebar-item  has-sub">
-                      <a href="#" class='sidebar-link'>
-                          <i class="bi bi-x-octagon-fill"></i>
-                          <span>Errors</span>
-                      </a>
-                      <ul class="submenu ">
-                          <li class="submenu-item ">
-                              <a href="error-403.html">403</a>
-                          </li>
-                          <li class="submenu-item ">
-                              <a href="error-404.html">404</a>
-                          </li>
-                          <li class="submenu-item ">
-                              <a href="error-500.html">500</a>
-                          </li>
-                      </ul>
-                  </li>
                   
-                  <li class="sidebar-title">Raise Support</li>
                   
-                  <li
-                      class="sidebar-item  ">
-                      <a href="https://zuramai.github.io/mazer/docs" class='sidebar-link'>
-                          <i class="bi bi-life-preserver"></i>
-                          <span>Documentation</span>
-                      </a>
-                  </li>
+         
                   
-                  <li
-                      class="sidebar-item  ">
-                      <a href="https://github.com/zuramai/mazer/blob/main/CONTRIBUTING.md" class='sidebar-link'>
-                          <i class="bi bi-puzzle"></i>
-                          <span>Contribute</span>
-                      </a>
-                  </li>
+                
                   
-                  <li
-                      class="sidebar-item  ">
-                      <a href="https://github.com/zuramai/mazer#donate" class='sidebar-link'>
-                          <i class="bi bi-cash"></i>
-                          <span>Donate</span>
-                      </a>
-                  </li>
+                 
+
                   
               </ul>
           </div>
